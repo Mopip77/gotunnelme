@@ -1,29 +1,39 @@
 package main
 
 import (
+	"flag"
 	"fmt"
-	"github.com/NoahShen/gotunnelme/src/gotunnelme"
-	"os"
-	"strconv"
+
+	"github.com/Mopip77/gotunnelme/src/gotunnelme"
 )
 
+var (
+	port = 8080
+	subDomain = ""
+	host = "http://localtunnel.me"
+)
+
+func flagParse() {
+	flag.IntVar(&port, "port", 8080, "local port")
+	flag.StringVar(&subDomain, "subdomain", "", "subdomain")
+	flag.StringVar(&host, "host", "http://localtunnel.me", "host")
+	flag.Parse()
+}
+
 func main() {
-	if len(os.Args) == 1 {
-		fmt.Fprintln(os.Stderr, "gotunnelme <local port>")
-		os.Exit(1)
-	}
-	i, err := strconv.Atoi(os.Args[1])
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
-	}
-	t := gotunnelme.NewTunnel()
-	url, err := t.GetUrl("")
+	flagParse()
+	fmt.Println("port:", port)
+	fmt.Println("subdomain:", subDomain)
+	fmt.Println("host:", host)
+	fmt.Println()
+	
+	t := gotunnelme.NewTunnel(host)
+	url, err := t.GetUrl(subDomain)
 	if err != nil {
 		panic(err)
 	}
 	print(url)
-	err = t.CreateTunnel(i)
+	err = t.CreateTunnel(port)
 	if err != nil {
 		panic(err)
 	}

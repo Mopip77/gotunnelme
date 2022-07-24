@@ -8,8 +8,9 @@ import (
 
 func TestTunnel(t *testing.T) {
 	Debug = true
-	tunnel := NewTunnel()
-	url, getUrlErr := tunnel.GetUrl("noah")
+	host := "http://localtunnel.me"
+	tunnel := NewTunnel(host)
+	url, getUrlErr := tunnel.GetUrl("")
 	if getUrlErr != nil {
 		t.Fatal(getUrlErr)
 	}
